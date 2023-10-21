@@ -1,0 +1,10 @@
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/locked_icon.jpg"
+  image_path_android: "assets/locked_icon.jpg"
+  image_path_ios: "assets/locked_icon.jpg"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/locked_icon.jpg"
+  remove_alpha_ios: true
+# flutter pub run flutter_launcher_icons:main -f launcher_icons.yaml
