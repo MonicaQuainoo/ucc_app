@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -22,7 +20,6 @@ class NavigationControls extends StatelessWidget {
               messenger.showSnackBar(
                 const SnackBar(content: Text('No back history item')),
               );
-              return;
             }
           },
         ),
@@ -36,7 +33,6 @@ class NavigationControls extends StatelessWidget {
               messenger.showSnackBar(
                 const SnackBar(content: Text('No forward history item')),
               );
-              return;
             }
           },
         ),

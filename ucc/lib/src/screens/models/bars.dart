@@ -12,11 +12,11 @@ class MyWidgetsBindingObserver with WidgetsBindingObserver {
   final ActiveState activeState;
   final StreamController<int> _activeCountStreamController =
       StreamController<int>.broadcast();
+
   Stream<int> get activeCountStream => _activeCountStreamController.stream;
-  
+
   MyWidgetsBindingObserver(this.activeState) {
-    
-        activeState.activeObject.getActives().listen((List<Active> actives) {
+    activeState.activeObject?.getActives().listen((List<Active> actives) {
       // Assuming you have a function to get the count of stored items
       int itemCount = actives.length;
 
@@ -35,7 +35,7 @@ class MyWidgetsBindingObserver with WidgetsBindingObserver {
           barrierDismissible: false,
           context: navigatorKey.currentState!.overlay!.context,
           builder: (BuildContext context) {
-            activeState.activeObject.addActive(1);
+            activeState.activeObject?.addActive(1);
 
             // The active count stream will be updated automatically when the stream emits a new value
             // You can access the latest active count using _activeCountStreamController.stream
@@ -93,6 +93,7 @@ class MyWidgetsBindingObserver with WidgetsBindingObserver {
   }
 }
 
-void closeAppUsingSystemPop() {
-  SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+void closeAppUsingSystemPop() async {
+  await SystemNavigator.pop(animated: true);
+  // SystemChannels.platform.invokeMethod('SystemNavigator.pop');
 }
