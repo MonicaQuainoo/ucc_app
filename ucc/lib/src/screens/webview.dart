@@ -15,7 +15,8 @@ class WebViewApp extends StatefulWidget {
 }
 
 class _WebViewAppState extends State<WebViewApp> {
-  final _controller = WebViewController();
+  final _controller = WebViewController()
+    ..setJavaScriptMode(JavaScriptMode.unrestricted);
   var _toggleCameraPreview = false, _loadingPercentage = 0;
 
   // ActiveState activeState = ActiveState();

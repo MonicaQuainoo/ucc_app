@@ -1,18 +1,13 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_windowmanager/flutter_windowmanager.dart';
+import 'package:logged/src/config/config.dart';
 import 'package:logged/src/screens/models/bars.dart';
 import 'package:logged/src/screens/webview.dart';
 import 'package:logged/src/services/active_class.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  await configureApp();
 
-  if (Platform.isAndroid) {
-    FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
-  }
   runApp(const MyApp());
 }
 
@@ -40,19 +35,17 @@ class _MyAppState extends State<MyApp> {
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Elearning App',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      navigatorKey: navigatorKey,
-      home: ChangeNotifierProvider(
-        create: (context) => _activeState,
-        builder: (context, child) => const WebViewApp(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => MaterialApp(
+        title: 'Elearning App',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        navigatorKey: navigatorKey,
+        home: ChangeNotifierProvider(
+          create: (context) => _activeState,
+          builder: (context, child) => const WebViewApp(),
+        ),
+      );
 }
