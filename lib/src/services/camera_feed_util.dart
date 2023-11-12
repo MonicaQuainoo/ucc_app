@@ -1,9 +1,3 @@
-// @todo -> 1. capture camera feed
-// @todo -> 2. save to device cache directory
-// @todo -> 3. upload to firebase storage
-// @todo -> 4. get download url
-// @todo -> 5. save to firestore
-
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -17,6 +11,11 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:video_compress/video_compress.dart';
 
 /// Utility class for camera feed related operations
+/// 1. capture camera feed
+/// 2. save to device cache directory
+/// 3. upload to firebase storage
+/// 4. get download url
+/// 5. save to firestore
 final class CameraFeedUtil {
   CameraFeedUtil({required this.controller, required this.context});
 
