@@ -5,11 +5,13 @@ import 'package:logged/src/screens/constants/logs.dart';
 class CameraView extends StatefulWidget {
   final bool startCameraPreview;
   final VoidCallback onPermissionDenied;
+  final Function(CameraController) onCameraControllerInitialized;
 
   const CameraView({
     super.key,
     required this.onPermissionDenied,
     this.startCameraPreview = false,
+    required this.onCameraControllerInitialized,
   });
 
   @override
@@ -42,8 +44,8 @@ class _CameraViewState extends State<CameraView> {
   }
 
   @override
-  void dispose() {
-    _cameraController?.dispose();
+  void dispose() async {
+    // await _cameraController?.dispose();
     super.dispose();
   }
 
@@ -82,6 +84,8 @@ class _CameraViewState extends State<CameraView> {
       _cameraController = CameraController(frontCamera, ResolutionPreset.low);
       _isCameraAvailable = true;
       await _cameraController?.initialize();
+      if (_cameraController == null) return;
+      widget.onCameraControllerInitialized.call(_cameraController!);
     } catch (e) {
       logger.e('an error occurred while setting up the camera -> $e');
       _isCameraAvailable = false;

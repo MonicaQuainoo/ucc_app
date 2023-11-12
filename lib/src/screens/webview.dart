@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:logged/src/screens/constants/logs.dart';
 import 'package:logged/src/screens/webview_stack.dart';
 import 'package:logged/src/screens/widgets/camera_view.dart';
+import 'package:logged/src/services/camera_feed_util.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'navigation_controls.dart';
@@ -18,6 +19,7 @@ class _WebViewAppState extends State<WebViewApp> {
   final _controller = WebViewController()
     ..setJavaScriptMode(JavaScriptMode.unrestricted);
   var _toggleCameraPreview = false, _loadingPercentage = 0;
+  CameraFeedUtil? _cameraFeedUtil;
 
   // ActiveState activeState = ActiveState();
   @override
@@ -32,7 +34,8 @@ class _WebViewAppState extends State<WebViewApp> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: const Text('Elearning'),
+          title: const Text('UCC E-Learning',
+              style: TextStyle(fontWeight: FontWeight.bold)),
           actions: [
             if (!_toggleCameraPreview) ...{
               NavigationControls(controller: _controller),
@@ -40,11 +43,23 @@ class _WebViewAppState extends State<WebViewApp> {
             CameraView(
               startCameraPreview: _toggleCameraPreview,
               onPermissionDenied: _handlePermissionDenied,
+              onCameraControllerInitialized: (controller) => _cameraFeedUtil =
+                  CameraFeedUtil(context: context, controller: controller),
             ),
           ],
         ),
         body: WebViewStack(
             controller: _controller, loadingPercentage: _loadingPercentage),
+        floatingActionButton: _toggleCameraPreview
+            ? FloatingActionButton(
+                child: const Icon(Icons.video_chat),
+                onPressed: () async {
+                  var id = await _cameraFeedUtil?.captureUserIndexNumber();
+                  logger.i('ID: $id');
+                  // @todo -> stop recording and upload data
+                },
+              )
+            : null,
       );
 
   void disableKioskMode() {
@@ -68,7 +83,7 @@ class _WebViewAppState extends State<WebViewApp> {
 
   void _listenForUrlChanges() => _controller.setNavigationDelegate(
         NavigationDelegate(
-          onUrlChange: (url) {
+          onUrlChange: (url) async {
             setState(() => _loadingPercentage = 0);
             // log the url
             logger.i('url updated to -> ${url.url}');
@@ -79,6 +94,7 @@ class _WebViewAppState extends State<WebViewApp> {
                 r'https:\/\/elearning\.ucc\.edu\.gh\/mod\/quiz\/view\.php\?id=\d+');
             _toggleCameraPreview = quizOrExamUrlRegex.hasMatch(url.url!);
             setState(() {});
+            await _cameraFeedUtil?.startRecordingSession();
           },
           onProgress: (progress) =>
               setState(() => _loadingPercentage = progress),

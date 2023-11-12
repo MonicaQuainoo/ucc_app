@@ -4,6 +4,7 @@ import 'package:logged/src/screens/models/bars.dart';
 import 'package:logged/src/screens/webview.dart';
 import 'package:logged/src/services/active_class.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   await configureApp();
@@ -41,6 +42,7 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
+          textTheme: GoogleFonts.dmSansTextTheme(),
         ),
         navigatorKey: navigatorKey,
         home: ChangeNotifierProvider(
